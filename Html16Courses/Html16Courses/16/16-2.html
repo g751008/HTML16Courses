@@ -1,0 +1,51 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB7R2YACfWhVdwIxIMorjgjD0IWbIitymQ"
+    async defer></script>
+    <script src="http://code.jquery.com/jquery-3.2.1.min.js"
+            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+            crossorigin="anonymous"></script>
+    
+    <script>
+        $(function () {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(success)
+            }
+            else {
+                $('#mymap').text('您的裝置不支援地圖服務!');
+            }
+        });
+
+        function success(pos) {
+            $('#lat').text(pos.coords.latitude);
+            $('#lng').text(pos.coords.longitude);
+            $('#acc').text(pos.coords.accuracy);
+
+            var myLatlng = {
+                lat: pos.coords.latitude,
+                lng: pos.coords.longitude
+            };
+
+            var mymap = new google.maps.Map($('#mymap').get(0), { zoom: 15, center: myLatlng });
+
+            new google.maps.Marker({ position: myLatlng, map: mymap, icon: 'http://maps.google.com/mapfiles/kml/shapes/flag.png' });
+
+            console.log('緯度:' + pos.coords.latitude);
+            console.log('經度:' + pos.coords.longitude);
+            console.log('精準度:' + pos.coords.accuracy + '公尺');
+        }
+    </script>
+
+</head>
+<body>
+    <p>
+        緯度：<b><span id="lat">?????</span></b>
+        經度：<b><span id="lng">?????</span></b>
+        精準度：<b><span id="acc">?????</span></b>
+    </p>
+    <div id="mymap" style="width:100%;height:300px"></div>
+</body>
+</html>
